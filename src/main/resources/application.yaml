@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: api-gateway
+
+
+
+
+jwt:
+  secretKey: "superSecretKey123!"
