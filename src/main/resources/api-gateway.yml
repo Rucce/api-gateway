@@ -4,6 +4,29 @@ info:
   version: 1.0.0
 
 paths:
+
+  /user/{email}:
+    post:
+      summary: get user associated to input email
+      operationId: getUserByEmail
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized (invalid or missing JWT)
+
   /auth/register:
     post:
       summary: Register new user
@@ -41,7 +64,25 @@ paths:
                 $ref: '#/components/schemas/LoginResponse'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
+    UserResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+
     RegisterRequest:
       type: object
       properties:
@@ -67,7 +108,6 @@ components:
           type: string
         password:
           type: string
-
     LoginResponse:
       type: object
       properties:
