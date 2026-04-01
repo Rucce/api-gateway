@@ -5,14 +5,14 @@ info:
 
 paths:
 
-  /user/{email}:
-    post:
-      summary: get user associated to input email
-      operationId: getUserByEmail
+  /user/{userId}:
+    get:
+      summary: get user by id
+      operationId: getUserById
       security:
         - bearerAuth: [ ]
       parameters:
-        - name: email
+        - name: userId
           in: path
           required: true
           schema:
@@ -112,4 +112,6 @@ components:
       type: object
       properties:
         token:
+          type: string
+        userId:
           type: string

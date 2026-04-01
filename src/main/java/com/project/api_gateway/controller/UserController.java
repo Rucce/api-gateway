@@ -15,7 +15,7 @@ public class UserController implements UserApi {
     private UserService userService;
 
     @Override
-    public ResponseEntity<UserResponse> getUserByEmail(String email) {
-        return ResponseEntity.ok().body(userService.getUserByEmail(email));
+    public ResponseEntity<UserResponse> getUserById(String userId) {
+        return ResponseEntity.ok().body(userService.getUserById(userId));
     }
 }

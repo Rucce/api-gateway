@@ -19,6 +19,7 @@ public class Mapper {
     public LoginResponse mapLoginResponse(com.project.userservice.model.LoginResponse usResponse) {
         LoginResponse apiResponse = new LoginResponse();
         apiResponse.setToken(usResponse.getToken());
+        apiResponse.setUserId(usResponse.getUserId());
         return apiResponse;
     }
 

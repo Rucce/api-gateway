@@ -17,11 +17,11 @@ public class UserService {
     @Autowired
     private AuthApiClient authApiClient;
 
-    public UserResponse getUserByEmail(String email) {
+    public UserResponse getUserById(String userId) {
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String roleClaim = jwt.getClaim("role");
-        String subject = jwt.getSubject();
-        if ("user".equals(roleClaim) && email.equals(subject)) {
+        String useridClaim = jwt.getClaim("userid");
+        if ("user".equals(roleClaim) && userId.equals(useridClaim)) {
             return stubUserByEmail();
         }
         throw new RuntimeException("Jwt not Valid!");
