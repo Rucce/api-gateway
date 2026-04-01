@@ -2,8 +2,9 @@ spring:
   application:
     name: api-gateway
 
-
+userservice:
+  url: http://localhost:8081
 
 
 jwt:
-  secretKey: "superSecretKey123!"
+  secretKey: "n2+R5tZpF3kL8VqH9x6M7eJ4hK0yQfT1bVwXcYzA1sE="

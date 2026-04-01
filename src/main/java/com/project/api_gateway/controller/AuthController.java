@@ -1,39 +1,38 @@
 package com.project.api_gateway.controller;
 
-import com.project.api_gateway.model.LoginRequest;
-import com.project.api_gateway.model.LoginResponse;
-import io.jsonwebtoken.Jwts;
+import com.project.api_gateway.mapper.Mapper;
+import com.project.api_gateway.service.UserService;
+import com.project.apigateway.api.AuthApi;
+import com.project.apigateway.model.LoginRequest;
+import com.project.apigateway.model.LoginResponse;
+import com.project.apigateway.model.RegisterResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-
 @RestController
-@RequestMapping("/login")
-public class AuthController {
+public class AuthController implements AuthApi {
 
-    @PostMapping
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        if ("admin".equals(request.getUsername()) && "password".equals(request.getPassword())) {
-            String token = Jwts.builder()
-                    .claim("role", "user")
-                    .issuedAt(Date.from(Instant.now()))
-                    .expiration(Date.from(Instant.now().plus(1, ChronoUnit.HOURS)))
-                    .compact();
+    @Autowired
+    private UserService userService;
 
-            LoginResponse response = new LoginResponse();
-            response.setToken(token);
-            response.setTtl("3600");
-            return ResponseEntity.ok(response);
-        } else {
-            LoginResponse response = new LoginResponse();
-            response.setErrorDescription("Invalid credentials");
-            return ResponseEntity.status(401).body(response);
-        }
+    private Mapper mapper;
+
+    @Override
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
+
+        com.project.userservice.model.LoginResponse loginResponse
+                = userService.login(mapper.mapLoginRequest(loginRequest));
+
+        return ResponseEntity.ok().body(mapper.mapLoginResponse(loginResponse));
+
+    }
+
+    @Override
+    public ResponseEntity<RegisterResponse> register(com.project.apigateway.model.RegisterRequest registerRequest) {
+        com.project.userservice.model.RegisterResponse registerResponse
+                = userService.register(mapper.mapRegisterRequest(registerRequest));
+
+        return ResponseEntity.ok().body(mapper.mapRegisterResponse(registerResponse));
     }
 }

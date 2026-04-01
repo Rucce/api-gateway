@@ -20,8 +20,24 @@
         <java.version>17</java.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2022.0.5</version> <!-- compatibile con Spring Boot 3.1.x -->
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -109,7 +125,36 @@
 
                 <executions>
                     <execution>
-                        <id>generate-api</id>
+                        <id>api-gateway</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api-gateway.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+
+                            <apiPackage>com.project.apigateway.api</apiPackage>
+                            <modelPackage>com.project.apigateway.model</modelPackage>
+
+                            <configOptions>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <openApiNullable>false</openApiNullable>
+                                <interfaceOnly>true</interfaceOnly>
+                                <skipController>true</skipController> <!-- NON genera controller -->
+                                <library>spring-cloud</library> <!-- interpreta come client, non controller -->
+                            </configOptions>
+
+                            <globalProperties>
+                                <supportingFiles>false</supportingFiles>
+                            </globalProperties>
+
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>user-service</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
@@ -124,8 +169,9 @@
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <openApiNullable>false</openApiNullable>
-                                <useResponseEntity>true</useResponseEntity>
-                                <skipDefaultInterface>true</skipDefaultInterface>
+                                <interfaceOnly>true</interfaceOnly> <!-- genera solo interfacce -->
+                                <library>spring-cloud</library> <!-- genera client Feign -->
+                                <useResponseEntity>false</useResponseEntity>
                             </configOptions>
 
                             <globalProperties>
