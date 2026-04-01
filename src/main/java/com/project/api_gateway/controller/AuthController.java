@@ -16,6 +16,7 @@ public class AuthController implements AuthApi {
     @Autowired
     private UserService userService;
 
+    @Autowired
     private Mapper mapper;
 
     @Override

@@ -4,7 +4,9 @@ import com.project.apigateway.model.LoginRequest;
 import com.project.apigateway.model.LoginResponse;
 import com.project.apigateway.model.RegisterRequest;
 import com.project.apigateway.model.RegisterResponse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Mapper {
 
     public com.project.userservice.model.LoginRequest mapLoginRequest(LoginRequest apiRequest) {
